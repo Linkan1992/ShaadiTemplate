@@ -1,3 +1,13 @@
 <resources>
-    <string name="app_name">ShaadiTemplate</string>
+    <string name="app_name">Shaadi Template</string>
+    <string name="logo">logo</string>
+    <string name="retry">Retry</string>
+    <string name="empty"></string>
+
+    <string name="network_unavailable">Connectivity Error</string>
+    <string name="something_went_wrong">Something went wrong here</string>
+    <string name="content_not_found">Content Not Found</string>
+    <string name="request_unauthorized">Request Unauthorized</string>
+    <string name="internal_server_error">Internal Server Error</string>
+    <string name="network_error">Please check your internet and try again</string>
 </resources>
