@@ -1,7 +1,6 @@
 package com.fashion.shaaditemplate.ui.activity.main
 
 import androidx.databinding.ObservableArrayList
-import androidx.databinding.ObservableList
 import androidx.lifecycle.LiveData
 import com.fashion.shaaditemplate.base.BaseViewModel
 import com.fashion.shaaditemplate.data.entiity.api.candidateProfile.Profile
@@ -39,7 +38,14 @@ class MainViewModel(
                 when(it){
                     is Result.Success -> {
                         if (it.data.results.isNullOrEmpty()) profileLiveData.postError( errorCode = AppConstants.HttpResCodes.STATUS_NO_ITEMS_FOUND)
-                        else profileLiveData.postSuccess(it.data)
+                        else {
+                            profileLiveData.postSuccess(it.data)
+                            /**
+                             * synchronous call to db first clear and then insert
+                             */
+                            dbHelper.clearAllToStore()
+                            dbHelper.insertProfileListInStore(it.data.results)
+                        }
                     }
                     is Result.Error -> profileLiveData.postError( errorCode = it.errorCode, errorMessage = it.message)
                 }
@@ -52,19 +58,16 @@ class MainViewModel(
         observableProfileList.addAll(results ?: ArrayList<Profile>())
     }
 
-    fun loadFromOfflineStorage() {
-       /* ioCoroutineScope.launch {
-            profileLiveData.postLoading()
-            dbHelper.fetchProfileDataList().also {
-                when(it){
-                    is Result.Success -> {
-                        if (it.data.results.isNullOrEmpty()) profileLiveData.postError( errorCode = AppConstants.HttpResCodes.STATUS_NO_ITEMS_FOUND)
-                        else profileLiveData.postSuccess(it.data)
-                    }
-                    is Result.Error -> profileLiveData.postError( errorCode = it.errorCode, errorMessage = it.message)
-                }
-            }
-        }*/
+    fun loadFromOfflineStorage(isLoading: Boolean) = dbHelper.fetchProfileDataList().also {
+        setLoading(isLoading)
     }
+
+
+    fun updateProfileInStore(model: Profile) {
+        ioCoroutineScope.launch {
+            dbHelper.updateProfileInStore(model)
+        }
+    }
+
 
 }

@@ -1,11 +1,16 @@
 package com.fashion.shaaditemplate.data.persistence.db
 
+import androidx.lifecycle.LiveData
+import com.fashion.shaaditemplate.data.entiity.api.candidateProfile.Profile
+
 interface DbHelper {
 
-    /*   suspend fun insertProfileListInStore(productList: List<ProductStore>)
+    suspend fun insertProfileListInStore(profileList: List<Profile>)
 
-       fun fetchProfileDataList() : LiveData<List<ProductStore>>
+    fun fetchProfileDataList(): LiveData<List<Profile>>
 
-       suspend fun updateDataInStore(productModel: ProductStore)*/
+    suspend fun updateProfileInStore(profileModel: Profile)
+
+    suspend fun clearAllToStore()
 
 }

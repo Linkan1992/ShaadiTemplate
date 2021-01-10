@@ -62,11 +62,19 @@ class CandidateProfileAdapter(
 
             binding.apply {
                 buttonAccept.setOnClickListener {
-                    model?.apply { statusCallback.accepted(this) }
+                    model?.apply {
+                        statusCallback.updateStatus(this.run {
+                        acceptanceStatus = "ACCEPT"
+                        this
+                    }) }
                 }
 
                 buttonReject.setOnClickListener {
-                    model?.apply { statusCallback.rejected(this) }
+                    model?.apply {
+                        statusCallback.updateStatus(this.run {
+                            acceptanceStatus = "REJECT"
+                            this
+                        }) }
                 }
             }
         }
@@ -78,9 +86,8 @@ class CandidateProfileAdapter(
 
     interface StatusCallback{
 
-        fun accepted(model: Profile)
+        fun updateStatus(model: Profile)
 
-        fun rejected(model: Profile)
     }
 
 }

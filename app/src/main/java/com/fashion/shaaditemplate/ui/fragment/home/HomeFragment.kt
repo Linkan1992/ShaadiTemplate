@@ -73,10 +73,18 @@ class HomeFragment : BaseFragment<FragmentHomeLayoutBinding, MainViewModel>(),
                      mainViewModel.setDataList(it.data.results)
                      mActivity.showCustomSnackBar("API Success ${it.data.results}", true)
                 }
-                is Result.Error -> if(it.errorCode == AppConstants.HttpResCodes.STATUS_NO_INTERNET)
-                    mainViewModel.loadFromOfflineStorage()
+                is Result.Error -> if(it.errorCode == AppConstants.HttpResCodes.STATUS_NO_INTERNET) makeSubscription(isLoading = true)
                 else setResponseCode(responseCode = it.errorCode)
             }
+        })
+
+    }
+
+    private fun makeSubscription(isLoading: Boolean) {
+        mainViewModel.loadFromOfflineStorage(isLoading).observe(viewLifecycleOwner, Observer { it1 ->
+            if (it1.isNullOrEmpty()) setResponseCode(responseCode = AppConstants.HttpResCodes.STATUS_NO_ITEMS_FOUND)
+            else mainViewModel.setDataList(it1)
+            mainViewModel.setLoading(false)
         })
     }
 
@@ -104,12 +112,14 @@ class HomeFragment : BaseFragment<FragmentHomeLayoutBinding, MainViewModel>(),
         super.onClick(v)
     }
 
-    override fun accepted(model: Profile) {
+    override fun updateStatus(model: Profile) {
+        if(mainViewModel.loadFromOfflineStorage(isLoading = false).hasActiveObservers()) {}
+        else makeSubscription(isLoading = false)
 
+        mainViewModel.updateProfileInStore(model)
     }
 
-    override fun rejected(model: Profile) {
 
-    }
+
 
 }
