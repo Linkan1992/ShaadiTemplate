@@ -3,6 +3,11 @@
     <string name="logo">logo</string>
     <string name="retry">Retry</string>
     <string name="empty"></string>
+    <string name="choose_profile">Choose Profile</string>
+    <string name="accept">Accept</string>
+    <string name="reject">Reject</string>
+    <string name="profile_accepted">Your Profile is Accepted</string>
+    <string name="profile_rejected">Your Profile is Rejected</string>
 
     <string name="network_unavailable">Connectivity Error</string>
     <string name="something_went_wrong">Something went wrong here</string>

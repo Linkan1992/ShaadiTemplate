@@ -43,7 +43,7 @@ abstract class BaseRecyclerViewAdapter<T, K : BaseRecyclerViewAdapter<T, K>.Base
 
     }
 
-    override fun getItemCount(): Int = if (data.isNotEmpty()) data.size else 1
+    override fun getItemCount(): Int = if (data.isNotEmpty()) data.size else 0
 
     override fun getItemViewType(position: Int): Int = if (data.isNotEmpty()) ViewType.VIEW_TYPE_NORMAL else  ViewType.VIEW_TYPE_EMPTY
 

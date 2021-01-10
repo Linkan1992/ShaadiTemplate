@@ -1,5 +1,7 @@
 package com.fashion.shaaditemplate.di.activityBuilder
 
+import com.fashion.shaaditemplate.di.providerModule.FragmentModuleProvider
+import com.fashion.shaaditemplate.ui.activity.main.MainActivity
 import com.fashion.shaaditemplate.ui.activity.splash.SplashActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -10,11 +12,11 @@ abstract class ActivityBuilder {
     @ContributesAndroidInjector
     abstract fun provideSplashActivity(): SplashActivity
 
-    /*@ContributesAndroidInjector(
+    @ContributesAndroidInjector(
         modules = [
-            MainModule::class
+            FragmentModuleProvider::class
         ]
     )
-    abstract fun provideMainActivity(): MainActivity*/
+    abstract fun provideMainActivity(): MainActivity
 
 }

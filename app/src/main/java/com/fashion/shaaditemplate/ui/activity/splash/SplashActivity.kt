@@ -9,6 +9,7 @@ import com.fashion.shaaditemplate.R
 import com.fashion.shaaditemplate.ViewModelProviderFactory
 import com.fashion.shaaditemplate.base.BaseActivity
 import com.fashion.shaaditemplate.databinding.ActivitySplashBinding
+import com.fashion.shaaditemplate.ui.activity.main.MainActivity
 import javax.inject.Inject
 
 import com.fashion.shaaditemplate.util.extension.Result
@@ -64,7 +65,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding, SplashViewModel>() {
 
 
     private fun redirectToMainActivity() {
-       // MainActivity.newIntent(this@SplashActivity)
+        MainActivity.newIntent(this@SplashActivity)
         finish()
     }
 

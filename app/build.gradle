@@ -35,6 +35,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField "String", "BASE_URL", "\"${getProperty("local.properties", "base_url")}\""
+        buildConfigField "String", "PROFILE_URL", "\"${getProperty("local.properties", "get_profile")}\""
     }
 
     dataBinding {

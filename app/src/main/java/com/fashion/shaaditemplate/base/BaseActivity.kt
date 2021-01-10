@@ -4,26 +4,43 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.Toast
+import androidx.annotation.AnimRes
+import androidx.annotation.AnimatorRes
+import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.Fragment
 import com.fashion.shaaditemplate.R
+import com.fashion.shaaditemplate.data.entiity.other.stack.FragmentStackModel
 import com.fashion.shaaditemplate.util.constUtil.AppConstants
 import com.fashion.shaaditemplate.util.constUtil.ConstMessage
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.DaggerAppCompatActivity
+import java.util.*
 
 
 abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel> : DaggerAppCompatActivity() {
+
+    private val fragmentStack by lazy { Stack<FragmentStackModel>() }
+
+    var mFragDetail: FragmentStackModel?
+        get() = if (fragmentStack.isNotEmpty()) fragmentStack.peek() else null
+        set(value) {
+            fragmentStack.push(value)
+        }
+
+    val mFragmentStack: Stack<FragmentStackModel>
+        get() = fragmentStack
+
 
     lateinit var viewDataBinding: T
         private set
 
     var mViewModel: V? = null
-
 
     @get:LayoutRes
     abstract val layoutId: Int
@@ -117,6 +134,49 @@ abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel> : DaggerAppC
             .show()
             .setCanceledOnTouchOutside(false)
     }
+
+
+    fun onFragmentAdd(
+        @IdRes container_view: Int,
+        fragment: Fragment,
+        TAG: String,
+        @AnimatorRes @AnimRes EnterAnimation: Int,
+        @AnimatorRes @AnimRes ExitAnimation: Int
+    ) {
+        supportFragmentManager
+            .beginTransaction()
+            .disallowAddToBackStack()
+            .setCustomAnimations(EnterAnimation, ExitAnimation)
+            .add(container_view, fragment, TAG)
+            .commit()
+
+
+        mFragDetail = FragmentStackModel(
+                TAG = TAG, container_view = container_view, enterAnimation = EnterAnimation,
+                exitAnimation = ExitAnimation
+            )
+    }
+
+
+    private fun onFragmentRemove(
+        TAG: String,
+        @AnimatorRes @AnimRes EnterAnimation: Int,
+        @AnimatorRes @AnimRes ExitAnimation: Int
+    ) {
+        val fragmentManager = supportFragmentManager
+        val fragment = fragmentManager.findFragmentByTag(TAG)
+        fragment?.let {
+            fragmentManager
+                .beginTransaction()
+                .disallowAddToBackStack()
+                .setCustomAnimations(EnterAnimation, ExitAnimation)
+                .remove(it)
+                .commitNow()
+
+            fragmentStack.pop()
+        }
+    }
+
 
 
 }

@@ -8,7 +8,7 @@ object RequestKey {
 
     const val ACCEPT_VALUE = "application/json"
 
-    const val CONTENT_VALUE = "application/x-www-form-urlencoded"
+    const val CONTENT_VALUE = "plain/text"
 
     object ProfileListing{
         const val RECORDS_PER_PAGE = "results"
