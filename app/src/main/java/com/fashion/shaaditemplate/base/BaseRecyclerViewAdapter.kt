@@ -4,10 +4,12 @@ package com.fashion.shaaditemplate.base
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.fashion.shaaditemplate.R
 import com.fashion.shaaditemplate.databinding.ErrorLayoutBinding
 import com.fashion.shaaditemplate.util.constUtil.ViewType
+
 
 abstract class BaseRecyclerViewAdapter<T, K : BaseRecyclerViewAdapter<T, K>.BaseViewHolder>(private val data: MutableList<T>) :
     RecyclerView.Adapter<K>() {
@@ -52,6 +54,11 @@ abstract class BaseRecyclerViewAdapter<T, K : BaseRecyclerViewAdapter<T, K>.Base
         notifyDataSetChanged()
     }
 
+    fun dataSetChangedAt(position: Int, model: T) {
+        data.set(position, model)
+        notifyItemChanged(position)
+    }
+
     fun itemRangeChanged(
         itemCountChanged: Int,
         child: List<T>
@@ -91,6 +98,12 @@ abstract class BaseRecyclerViewAdapter<T, K : BaseRecyclerViewAdapter<T, K>.Base
     }
 
 
+    fun updateByDiffUtil(newList: List<T>){
+        val diffResult = DiffUtil.calculateDiff(MyDiffCallback(this.data, newList))
+        diffResult.dispatchUpdatesTo(this)
+    }
+
+
     override fun onViewDetachedFromWindow(holder: K) {
         holder.viewDetachedFromWindow()
         super.onViewDetachedFromWindow(holder)
@@ -122,5 +135,28 @@ abstract class BaseRecyclerViewAdapter<T, K : BaseRecyclerViewAdapter<T, K>.Base
         abstract fun viewDetachedFromWindow()
 
     }
+
+    inner class MyDiffCallback(private val newList: List<T>, private val oldList: List<T>) :
+        DiffUtil.Callback() {
+
+         override fun getOldListSize(): Int {
+            return oldList.size
+        }
+
+        override fun getNewListSize(): Int {
+            return newList.size
+        }
+
+         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+             customContentsTheSame(oldItemPosition, newItemPosition, oldList, newList)
+
+         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+             customItemsTheSame(oldItemPosition, newItemPosition, oldList, newList)
+
+     }
+
+     abstract fun customContentsTheSame(oldItemPosition: Int, newItemPosition: Int, oldList: List<T>, newList: List<T>): Boolean
+
+     abstract  fun customItemsTheSame(oldItemPosition: Int, newItemPosition: Int, oldList: List<T>, newList: List<T>): Boolean
 
 }

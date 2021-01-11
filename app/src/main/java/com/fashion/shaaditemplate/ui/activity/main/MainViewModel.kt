@@ -21,6 +21,8 @@ class MainViewModel(
     @CoroutineScopeIO private val ioCoroutineScope: CoroutineScope
 ) : BaseViewModel() {
 
+    var changeProfilePosition = -1
+
     private val profileLiveData: StateLiveData<ResultResponse> by lazy { StateLiveData<ResultResponse>() }
 
     val mProfileLiveData: LiveData<Result<ResultResponse>>
@@ -63,7 +65,8 @@ class MainViewModel(
     }
 
 
-    fun updateProfileInStore(model: Profile) {
+    fun updateProfileInStore(model: Profile, position : Int) {
+        changeProfilePosition = position
         ioCoroutineScope.launch {
             dbHelper.updateProfileInStore(model)
         }

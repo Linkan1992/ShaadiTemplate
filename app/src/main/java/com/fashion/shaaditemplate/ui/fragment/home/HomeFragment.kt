@@ -112,11 +112,11 @@ class HomeFragment : BaseFragment<FragmentHomeLayoutBinding, MainViewModel>(),
         super.onClick(v)
     }
 
-    override fun updateStatus(model: Profile) {
+    override fun updateStatus(model: Profile, position : Int) {
         if(mainViewModel.loadFromOfflineStorage(isLoading = false).hasActiveObservers()) {}
         else makeSubscription(isLoading = false)
 
-        mainViewModel.updateProfileInStore(model)
+        mainViewModel.updateProfileInStore(model, position)
     }
 
 

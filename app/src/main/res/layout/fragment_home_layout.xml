@@ -34,7 +34,8 @@
             app:spanCount="10"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:profileAdapter="@{ viewModel.mObservableProfileList }"/>
+            app:profileAdapter="@{ viewModel.mObservableProfileList }"
+            app:position="@{ viewModel.changeProfilePosition }"/>
 
         <include
             android:id="@+id/included_base_progress_loader"

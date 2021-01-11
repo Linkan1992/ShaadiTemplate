@@ -66,7 +66,7 @@ class CandidateProfileAdapter(
                         statusCallback.updateStatus(this.run {
                         acceptanceStatus = "ACCEPT"
                         this
-                    }) }
+                    }, adapterPosition) }
                 }
 
                 buttonReject.setOnClickListener {
@@ -74,7 +74,7 @@ class CandidateProfileAdapter(
                         statusCallback.updateStatus(this.run {
                             acceptanceStatus = "REJECT"
                             this
-                        }) }
+                        }, adapterPosition) }
                 }
             }
         }
@@ -86,8 +86,18 @@ class CandidateProfileAdapter(
 
     interface StatusCallback{
 
-        fun updateStatus(model: Profile)
+        fun updateStatus(model: Profile, position : Int)
 
     }
+
+    override fun customItemsTheSame(oldItemPosition: Int, newItemPosition: Int, oldList: List<Profile>, newList: List<Profile>): Boolean =
+    oldList[oldItemPosition].cell == newList[newItemPosition].cell
+
+
+    override fun customContentsTheSame(oldItemPosition: Int, newItemPosition: Int, oldList: List<Profile>, newList: List<Profile>): Boolean =
+        oldList[oldItemPosition].acceptanceStatus == newList[newItemPosition].acceptanceStatus
+
+
+
 
 }
